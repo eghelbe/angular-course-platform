@@ -1,0 +1,18 @@
+.lesson-panel {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 900px;   // ⬅️ הרבה יותר נוח לקוד
+  margin: 0 auto;
+  background: var(--panel);
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+
+.lesson-frame {
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  background: white;
+}

@@ -1,1 +1,25 @@
-/* You can add global styles to this file, and also import other style files */
+:root{
+  --bg:#0b1020;
+  --panel:rgba(255,255,255,0.06);
+  --stroke:rgba(255,255,255,0.14);
+  --text:rgba(255,255,255,0.92);
+  --muted:rgba(255,255,255,0.72);
+  --accent:#4da3ff;
+  --radius:16px;
+  --max:1100px;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:"Heebo", Arial, sans-serif;
+  background:linear-gradient(180deg,#080c1a,#0b1020);
+  color:var(--text);
+  line-height:1.7;
+}
+
+.page-container {
+  max-width: var(--max);
+  margin: 0 auto;
+}

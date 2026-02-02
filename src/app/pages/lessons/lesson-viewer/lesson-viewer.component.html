@@ -1,0 +1,12 @@
+@if (lessonFound) {
+  <div class="lesson-panel">
+    <iframe
+      #lessonFrame
+      [src]="lessonUrl"
+      class="lesson-frame"
+      sandbox="allow-scripts allow-same-origin"
+    ></iframe>
+  </div>
+} @else {
+  <p>השיעור לא נמצא</p>
+}

@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>שיעור 1 — HTML: תגיות ותחביר</title>
+
+  <style>
+    :root{
+      --bg:#0b1020;
+      --panel:rgba(255,255,255,0.06);
+      --stroke:rgba(255,255,255,0.14);
+      --text:rgba(255,255,255,0.92);
+      --muted:rgba(255,255,255,0.72);
+      --accent:#4da3ff;
+      --radius:16px;
+      --max:900px;
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family:"Heebo", Arial, sans-serif;
+      background:linear-gradient(180deg,#080c1a,#0b1020);
+      color:var(--text);
+      line-height:1.7;
+    }
+
+    main{
+      max-width:var(--max);
+      margin:32px 0;
+      padding:32px;
+    }
+
+    h1,h2,h3{
+      margin-top:1.6em;
+      line-height:1.3;
+    }
+
+    h1{
+      margin-top:0;
+      font-size:28px;
+    }
+
+    h2{
+      font-size:22px;
+      border-bottom:1px solid var(--stroke);
+      padding-bottom:6px;
+    }
+
+    h3{
+      font-size:18px;
+      color:var(--accent);
+    }
+
+    p{
+      margin:12px 0;
+      color:var(--muted);
+    }
+
+	code{
+	  display:block;
+	  background:#0e1325;
+	  border:1px solid var(--stroke);
+	  border-radius:12px;
+	  padding:18px 20px;
+	  margin:16px 0;
+	  font-family:"Fira Code", Consolas, monospace;
+	  font-size:15px;
+	  line-height:1.6;
+	  direction:ltr;
+	  text-align:left;
+	  overflow-x:auto;
+	  white-space:pre;
+	}
+
+	/* Syntax highlighting */
+
+	code .tag{
+	  color:#4da3ff;
+	}
+
+	code .attr{
+	  color:#7ee787;
+	}
+
+	code .value{
+	  color:#f2cc60;
+	}
+
+	code .text{
+	  color:#ffffff;
+	}
+	
+	.tags{
+		border: solid gray 1px;
+		border-radius: 8px;
+		padding: 3px;
+		color:#7ee787;
+	}
+	
+	.tag{
+	  color:#4da3ff;
+	  font-family:"Fira Code", Consolas, monospace;
+	}
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin:24px 0;
+      font-size:14px;
+    }
+
+    th,td{
+      border:1px solid var(--stroke);
+      padding:10px;
+      text-align:right;
+    }
+
+    th{
+      background:rgba(255,255,255,0.08);
+    }
+
+    .exercise{
+      margin-top:32px;
+      padding:24px;
+      border:1px dashed var(--stroke);
+      border-radius:16px;
+      background:rgba(0,0,0,0.25);
+    }
+
+    .exercise h3{
+      margin-top:0;
+    }
+
+    .note{
+      color:var(--muted);
+      font-size:14px;
+    }
+	.link{
+		color: purple;
+	}
+  </style>
+</head>
+
+<body>
+
+<main>
+
+  <h1>שיעור 1 — HTML: תגיות ותחביר</h1>
+
+	<p>
+	עובדים ב־JSFiddle:<br>
+	<a class="link" href="https://jsfiddle.net">https://jsfiddle.net</a>
+	</p>
+
+  <h2>1) מה זה HTML?</h2>
+
+  <p>
+    HTML היא שפה שמתארת את המבנה והתוכן של דף אינטרנט.
+  </p>
+
+  <p>
+    היא לא עוסקת בעיצוב, צבעים או אנימציות —  
+    אלא רק בשאלה:
+    <br>
+    <strong>מה יש בדף ואיך הוא בנוי.</strong>
+  </p>
+
+  <h2>2) תחביר (Syntax) של HTML</h2>
+
+  <h3>תג עם פתיחה וסגירה</h3>
+
+<code>
+<span class="tag">&lt;p&gt;</span><span class="text">זהו טקסט בתוך פסקה</span><span class="tag">&lt;/p&gt;</span>
+</code>
+
+<p>
+אפשר לכתוב גם כך: (ובעברית זה אפילו עדיף)
+</p>
+
+<code>
+<span class="tag">&lt;p&gt;</span>
+<span class="text">זהו טקסט בתוך פסקה</span>
+<span class="tag">&lt;/p&gt;</span>
+</code>
+
+  <p>
+    רוב התגיות ב־HTML נפתחות ונסגרות.
+    <br>
+    התוכן נמצא ביניהן.
+  </p>
+
+  <h3>תג ללא סגירה</h3>
+
+<code>
+<span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="value">"image.jpg"</span> <span class="attr">alt</span>=<span class="value">"תיאור תמונה"</span><span class="tag">&gt;</span>
+</code>
+
+<p>אפשר לכתוב גם כך:</p>
+
+<code>
+<span class="tag">&lt;img</span>
+<span class="attr">src</span>=<span class="value">"image.jpg"</span>
+<span class="attr">alt</span>=<span class="value">"תיאור תמונה"</span>
+<span class="tag">&gt;</span>
+</code>
+
+  <p>
+    יש תגיות שאין להן תג סגירה.
+    <br>
+    המידע נכתב בעזרת מאפיינים - לדוגמא:
+	<span class="tags">src</span>
+	<span class="tags">alt</span>
+  </p>
+  
+
+  <h3>תגים בתוך תגים</h3>
+  
+    <p>
+    HTML בנוי כהיררכיה:
+    <br>
+    תגים יכולים להכיל תגים אחרים.
+  </p>
+
+<code>
+<span class="tag">&lt;section&gt;</span>
+  <span class="tag">&lt;h2&gt;</span><span class="text">כותרת</span><span class="tag">&lt;/h2&gt;</span>
+  <span class="tag">&lt;p&gt;</span><span class="text">פסקה</span><span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;/section&gt;</span>
+</code>
+
+
+
+  <h2>3) תגיות HTML נפוצות</h2>
+
+  <table>
+    <tr>
+      <th>תג</th>
+      <th>יש תג סגירה?</th>
+      <th>מתי משתמשים</th>
+    </tr>
+    <tr>
+      <td><span class="tag">&lt;html&gt;</span></td>
+      <td>כן</td>
+      <td>עוטף את כל הדף</td>
+    </tr>
+    <tr>
+      <td><span class="tag">&lt;head&gt;</span></td>
+      <td>כן</td>
+      <td>מידע כללי על הדף</td>
+    </tr>
+    <tr>
+      <td><span class="tag">&lt;body&gt;</span></td>
+      <td>כן</td>
+      <td>כל מה שמוצג במסך</td>
+    </tr>
+    <tr>
+      <td><span class="tag">&lt;main&gt;</span></td>
+      <td>כן</td>
+      <td>התוכן המרכזי</td>
+    </tr>
+    <tr>
+      <td><span class="tag">&lt;section&gt;</span></td>
+      <td>כן</td>
+      <td>חלוקה לאזורים</td>
+    </tr>
+    <tr>
+      <td><span class="tag">&lt;div&gt;</span></td>
+      <td>כן</td>
+      <td>קופסה כללית</td>
+    </tr>
+    <tr>
+      <td><span class="tag">&lt;h1&gt;</span>–<span class="tag">&lt;h4&gt;</span></td>
+      <td>כן</td>
+      <td>כותרות</td>
+    </tr>
+    <tr>
+      <td><span class="tag">&lt;p&gt;</span></td>
+      <td>כן</td>
+      <td>פסקה</td>
+    </tr>
+    <tr>
+      <td><span class="tag">&lt;a&gt;</span></td>
+      <td>כן</td>
+      <td>קישור</td>
+    </tr>
+    <tr>
+      <td><span class="tag">&lt;img&gt;</span></td>
+      <td>לא</td>
+      <td>תמונה</td>
+    </tr>
+    <tr>
+      <td><span class="tag">&lt;button&gt;</span></td>
+      <td>כן</td>
+      <td>כפתור</td>
+    </tr>
+  </table>
+
+  <h2>4) איך בונים דף HTML?</h2>
+
+  <p>
+    דף HTML בנוי מאזורים ברורים.
+  </p>
+
+  <p>
+    לדוגמה:  
+    אם נרצה לבנות סרגל ניווט לחנות דיגיטלית,
+    נשתמש בקופסה אחת שבתוכה קישורים.
+  </p>
+
+<code>
+<span class="tag">&lt;div&gt;</span>
+  <span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="value">"/about"</span><span class="tag">&gt;</span><span class="text">אודות</span><span class="tag">&lt;/a&gt;</span>
+  <span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="value">"/products"</span><span class="tag">&gt;</span><span class="text">כל המוצרים</span><span class="tag">&lt;/a&gt;</span>
+  <span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="value">"/categories"</span><span class="tag">&gt;</span><span class="text">קטגוריות</span><span class="tag">&lt;/a&gt;</span>
+  <span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="value">"/cart"</span><span class="tag">&gt;</span><span class="text">עגלת קניות</span><span class="tag">&lt;/a&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+</code>
+
+  <p>
+    כל אלמנט ממלא תפקיד ברור בתוך המבנה.
+  </p>
+
+  <h2>5) תרגול</h2>
+
+  <div class="exercise">
+    <h3>תרגיל 5.1 — יצירת שלד הדף</h3>
+    <p>
+      צרו דף HTML עם אלמנט <strong>&lt;main&gt;</strong> אחד.
+    </p>
+  </div>
+
+  <div class="exercise">
+    <h3>תרגיל 5.2 — הוספת כותרת ראשית</h3>
+    <p>
+      הוסיפו בתוך <strong>&lt;main&gt;</strong> כותרת <strong>&lt;h1&gt;</strong>
+      עם השם שלכם.
+    </p>
+  </div>
+
+  <div class="exercise">
+    <h3>תרגיל 5.3 — אזור תוכן ראשון</h3>
+    <p>
+      הוסיפו לדף <strong>&lt;section&gt;</strong> אחד.
+      <br>
+      בתוך ה־section הוסיפו:
+    </p>
+    <ul>
+      <li>כותרת <strong>&lt;h2&gt;</strong></li>
+      <li>כותרת <strong>&lt;h3&gt;</strong></li>
+      <li>פסקה אחת <strong>&lt;p&gt;</strong></li>
+    </ul>
+	<p class="note">
+      שימו לב - הכל נשאר בתוך
+	  <strong>&lt;main&gt;</strong>
+    </p>
+  </div>
+
+  <div class="exercise">
+    <h3>תרגיל 5.4 — הוספת אלמנטים</h3>
+    <p>
+      הוסיפו לאותו הדף:
+    </p>
+    <ul>
+      <li>תמונה אחת</li>
+      <li>כפתור אחד</li>
+    </ul>
+    <p class="note">
+      שימו לב - הכל נשאר בתוך
+	  <strong>&lt;main&gt;</strong>
+    </p>
+  </div>
+
+  <div class="exercise">
+    <h3>תרגיל 5.5 — השלמת מבנה הדף</h3>
+    <p>
+      המשיכו לעבוד על אותו הדף.
+      <br>
+      הוסיפו עוד <strong>&lt;section&gt;</strong> כך שבדף יהיו לפחות שלושה.
+    </p>
+    <p>
+      בכל <strong>&lt;section&gt;</strong> צריך להיות:
+    </p>
+    <ul>
+      <li><strong>&lt;h2&gt;</strong></li>
+      <li><strong>&lt;h3&gt;</strong></li>
+      <li><strong>&lt;p&gt;</strong></li>
+    </ul>
+	<p>
+		המבנה צריך להיות ברור גם בלי עיצוב בכלל.
+	</p>
+  </div>
+
+</main>
+
+<script>
+  function sendHeight() {
+    const height = document.documentElement.scrollHeight;
+    window.parent.postMessage(
+      { type: 'lesson-height', height },
+      '*'
+    );
+  }
+
+  window.addEventListener('load', sendHeight);
+  window.addEventListener('resize', sendHeight);
+
+  // ביטחון לשינויים דינמיים / פונטים
+  setTimeout(sendHeight, 100);
+</script>
+
+</body>
+</html>

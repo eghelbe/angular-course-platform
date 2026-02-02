@@ -1,0 +1,39 @@
+<header class="top-header">
+
+  <div class="header-right">
+    @if(isMax1000()){
+      <button class="hamburger" (click)="toggleSidebar()">☰</button>
+    } @else {
+      <div class="space-holder"></div>
+    }
+    
+  </div>
+  <div class="header-center">
+    Angular Course Platform
+  </div>
+
+
+    <div class="header-left">
+    <img src="assets/branding/ticktech-logo.png" class="app-logo" alt="Tick-Tech" />
+  </div>
+</header>
+
+<div class="shell">
+  <aside
+    class="sidebar"
+    [class.open]="sidebarOpen"
+  >
+    <app-sidebar></app-sidebar>
+  </aside>
+
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+</div>
+
+@if (sidebarOpen) {
+  <div
+    class="backdrop"
+    (click)="toggleSidebar()"
+  ></div>
+}

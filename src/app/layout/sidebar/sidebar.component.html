@@ -1,0 +1,32 @@
+<nav class="nav">
+
+  <div class="nav-section">
+    <h4>תוכן הקורס</h4>
+
+    @for (track of tracks; track track.id) {
+      <details open>
+        <summary>{{ track.title }}</summary>
+
+        @for (lesson of track.lessons; track lesson.slug) {
+          <a
+            [routerLink]="['/lesson', track.id, lesson.slug]"
+            routerLinkActive="active"
+          >
+            {{ lesson.title }}
+          </a>
+        }
+      </details>
+    }
+  </div>
+
+  <div class="nav-section">
+    <h4>דוגמאות</h4>
+    <a routerLink="/examples">כל הדוגמאות</a>
+  </div>
+
+  <div class="nav-section">
+    <h4>תערוכה</h4>
+    <a routerLink="/showcase">תוצרי תלמידים</a>
+  </div>
+
+</nav>

@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>שיעור 2 — CSS: Properties בסיסיים ותרגול</title>
+
+  <style>
+    :root {
+      --bg:#0b1020;
+      --panel:rgba(255,255,255,0.06);
+      --stroke:rgba(255,255,255,0.14);
+      --text:rgba(255,255,255,0.92);
+      --muted:rgba(255,255,255,0.75);
+      --accent:#4da3ff;
+      --radius:16px;
+      --max:900px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin:0;
+      font-family: Heebo, Arial, sans-serif;
+      background: linear-gradient(180deg,#080c1a,#0b1020);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    main {
+      max-width: var(--max);
+      margin: 32px auto;
+      padding: 32px;
+    }
+
+    h1 { margin-top:0; font-size:28px; }
+    h2 { margin-top:32px; font-size:22px; border-bottom:1px solid var(--stroke); padding-bottom:6px; }
+    h3 { margin-top:24px; font-size:18px; color:var(--accent); }
+
+    p { margin:12px 0; color:var(--muted); }
+
+    pre {
+      background: rgba(0,0,0,0.35);
+      padding: 16px;
+      border-radius: 12px;
+      overflow-x: auto;
+      direction: ltr;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    table {
+      width:100%;
+      border-collapse:collapse;
+      margin:24px 0;
+      font-size:14px;
+    }
+
+    th, td {
+      border:1px solid var(--stroke);
+      padding:10px;
+      vertical-align:top;
+    }
+
+    th {
+      background:rgba(255,255,255,0.08);
+    }
+
+    ul { padding-right:20px; }
+
+    .note {
+      margin:20px 0;
+      padding:16px;
+      background:rgba(0,0,0,0.25);
+      border-radius:12px;
+      font-size:14px;
+    }
+	
+	code{
+	  display:block;
+	  background:#0e1325;
+	  border:1px solid var(--stroke);
+	  border-radius:12px;
+	  padding:18px 20px;
+	  margin:16px 0;
+	  font-family:"Fira Code", Consolas, monospace;
+	  font-size:15px;
+	  line-height:1.6;
+	  direction:ltr;
+	  text-align:left;
+	  overflow-x:auto;
+	  white-space:pre;
+	}
+
+	/* Syntax highlighting */
+
+	code .tag{
+	  color:#4da3ff;
+	}
+
+	code .attr{
+	  color:#7ee787;
+	}
+
+	code .value{
+	  color:#f2cc60;
+	}
+
+	code .text{
+	  color:#ffffff;
+	}
+
+	code .comment{
+	  color:#8b949e;
+	  font-style: italic;
+	}
+	
+	.tags{
+		border: solid gray 1px;
+		border-radius: 8px;
+		padding: 3px;
+		color:#7ee787;
+	}
+	
+	.ltr{
+		direction: ltr;
+	}
+
+	/* ===== Box Model Visual (Dark Theme) ===== */
+
+	.box-model {
+	  margin: 48px auto;
+	  max-width: 760px;
+	  text-align: center;
+	  font-weight: 500;
+	  color: #e5e7eb;
+	}
+
+	.margin-layer,
+	.border-layer,
+	.padding-layer,
+	.content-layer {
+	  position: relative;
+	  padding: 32px;
+	}
+
+	/* ===== Overlay highlight (DevTools-like) ===== */
+
+	.margin-layer::before,
+	.border-layer::before,
+	.padding-layer::before,
+	.content-layer::before {
+	  content: "";
+	  position: absolute;
+	  inset: 0;
+	  background: transparent;
+	  pointer-events: none;
+	  transition: background 0.15s ease;
+	}
+
+	/* Label */
+	.layer-label {
+	  position: absolute;
+	  top: 8px;
+	  right: 12px;
+	  font-size: 13px;
+	  font-weight: 600;
+	  opacity: 0.85;
+	  z-index: 1;
+	}
+
+	/* ===== Base colors (static) ===== */
+
+	/* Margin */
+	.margin-layer {
+	  background: rgba(255, 255, 255, 0.03);
+	  border: 2px dashed rgba(255, 255, 255, 0.25);
+	}
+
+	/* Border */
+	.border-layer {
+	  background: rgba(16, 185, 129, 0.25);
+	}
+
+	/* Padding */
+	.padding-layer {
+	  background: rgba(255, 255, 255, 0.04);
+	  border: 2px dashed rgba(255, 255, 255, 0.25);
+	}
+
+	/* Content */
+	.content-layer {
+	  background: rgba(255, 255, 255, 0.12);
+	  padding: 28px;
+	  font-size: 18px;
+	  font-weight: 600;
+	  color: #ffffff;
+	}
+
+	/* ===== Hover highlight (isolated per layer) ===== */
+
+	.margin-layer:hover::before {
+	  background: rgba(255, 255, 255, 0.08);
+	}
+
+	.border-layer:hover::before {
+	  background: rgba(16, 185, 129, 0.35);
+	}
+
+	.padding-layer:hover::before {
+	  background: rgba(255, 255, 255, 0.1);
+	}
+
+	.content-layer:hover::before {
+	  background: rgba(255, 255, 255, 0.18);
+	}
+
+	.link{
+		color: purple;
+	}
+
+  </style>
+</head>
+
+<body>
+
+<main>
+
+<h1>שיעור 2 — CSS: Properties בסיסיים ותרגול</h1>
+
+<p>
+עובדים ב־JSFiddle:<br>
+<a class="link" href="https://jsfiddle.net">https://jsfiddle.net</a>
+</p>
+
+<p>
+משתמשים באותו HTML מהשיעור הקודם —
+לא משנים את מבנה ה־HTML, רק מוסיפים CSS.
+</p>
+
+<h2>1) מה זה CSS?</h2>
+
+<p>CSS היא שפה שאחראית על העיצוב של דף האינטרנט.</p>
+
+<p>היא קובעת:</p>
+<ul>
+  <li>צבעים</li>
+  <li>ריווחים</li>
+  <li>גדלים</li>
+  <li>מסגרות</li>
+  <li>מראה כללי</li>
+</ul>
+
+<p>
+CSS לא משנה את המבנה של הדף.<br>
+המבנה נקבע ב־HTML, והעיצוב נקבע ב־CSS.
+</p>
+
+<h2>2) תחביר (Syntax) של CSS</h2>
+
+<code>
+<span class="tag">selector</span>
+<span class="text">{</span>
+&nbsp;&nbsp;<span class="attr">property</span><span class="text">:</span> <span class="value">value</span><span class="text">;</span>
+<span class="text">}</span>
+</code>
+
+<p>
+<strong>selector</strong> — על איזה אלמנט או מחלקה העיצוב חל<br>
+<strong>property</strong> — איזה מאפיין אנחנו משנים<br>
+<strong>value</strong> — הערך של אותו מאפיין
+</p>
+
+<p>כל שורה מסתיימת בנקודה־פסיק (;).</p>
+
+<h2>3) דוגמה מלאה ל־CSS תקין</h2>
+
+<code><span class="tag">.dark-title</span> <span class="text">{</span>
+  <span class="attr">background-color</span><span class="text">:</span> <span class="value">black</span><span class="text">;</span>
+  <span class="attr">color</span><span class="text">:</span> <span class="value">white</span><span class="text">;</span>
+<span class="text">}</span>
+</code>
+
+<h2>4) חיבור בין CSS ל־HTML (class)</h2>
+
+<p>
+כדי לחבר מחלקה מה־CSS לאלמנט ב־HTML,
+משתמשים במאפיין <strong>class</strong>.
+</p>
+
+<code><span class="tag">&lt;h2</span> <span class="attr">class</span>=<span class="value">"dark-title"</span><span class="tag">&gt;</span>
+<span class="text">כותרת עם רקע שחור וכתב לבן</span>
+<span class="tag">&lt;/h2&gt;</span>
+</code>
+
+<h2>5) חיבור של מחלקה אחת לכמה אלמנטים</h2>
+
+<p>
+מחלקה ב־CSS לא מיועדת לאלמנט אחד בלבד.<br>
+אפשר לחבר את אותה מחלקה לכמה אלמנטים שונים בדף.
+</p>
+
+<p>זה חשוב, כי כך אפשר:</p>
+<ul>
+  <li>לעצב הרבה אלמנטים</li>
+  <li>בעזרת הגדרה אחת בלבד ב־CSS</li>
+</ul>
+
+<code><span class="tag">.notice</span> <span class="text">{</span>
+&nbsp;&nbsp;<span class="attr">color</span><span class="text">:</span> <span class="value">blue</span><span class="text">;</span>
+&nbsp;&nbsp;<span class="attr">font-size</span><span class="text">:</span> <span class="value">18px</span><span class="text">;</span>
+<span class="text">}</span>
+</code>
+
+<code><span class="tag">&lt;p</span> <span class="attr">class</span>=<span class="value">"notice"</span><span class="tag">&gt;</span><span class="text">זהו טקסט חשוב</span><span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;h3</span> <span class="attr">class</span>=<span class="value">"notice"</span><span class="tag">&gt;</span><span class="text">כותרת חשובה</span><span class="tag">&lt;/h3&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"notice"</span><span class="tag">&gt;</span><span class="text">הודעה כללית</span><span class="tag">&lt;/div&gt;</span>
+</code>
+
+<p>
+אם משנים את המחלקה <strong>notice</strong> —
+כל האלמנטים שמחוברים אליה משתנים יחד.
+</p>
+
+<h2>6) חיבור של כמה מחלקות לאותו אלמנט</h2>
+
+<p>
+אפשר להחיל יותר ממחלקה אחת על אותו אלמנט.
+</p>
+
+<p>
+שמות המחלקות:
+</p>
+<ul>
+  <li>נכתבים עם רווח ביניהם</li>
+  <li>ועדיין בתוך המרכאות של <span class="tags">class</span></li>
+</ul>
+
+<code><span class="tag">&lt;h2</span> <span class="attr">class</span>=<span class="value">"dark-title italic"</span><span class="tag">&gt;</span>
+<span class="text">כותרת עם רקע שחור וכתב לבן בסטייל נטוי</span>
+<span class="tag">&lt;/h2&gt;</span>
+</code>
+
+<h2>7) Properties בסיסיים ב־CSS</h2>
+
+<table>
+<tr><th>Property</th><th>על מה משפיע</th><th>דוגמה</th></tr>
+<tr><td>color</td><td>צבע הטקסט</td><td class="ltr">color: red;</td></tr>
+<tr><td>background-color</td><td>צבע הרקע</td><td class="ltr">background-color: blue;</td></tr>
+<tr><td>padding-top</td><td>ריווח פנימי מלמעלה</td><td class="ltr">padding-top: 10px;</td></tr>
+<tr><td>padding-right</td><td>ריווח פנימי מימין</td><td class="ltr">padding-right: 10px;</td></tr>
+<tr><td>padding-bottom</td><td>ריווח פנימי מלמטה</td><td class="ltr">padding-bottom: 10px;</td></tr>
+<tr><td>padding-left</td><td>ריווח פנימי משמאל</td><td class="ltr">padding-left: 10px;</td></tr>
+<tr><td>margin-top</td><td>ריווח חיצוני מלמעלה</td><td class="ltr">margin-top: 12px;</td></tr>
+<tr><td>margin-right</td><td>ריווח חיצוני מימין</td><td class="ltr">margin-right: 12px;</td></tr>
+<tr><td>margin-bottom</td><td>ריווח חיצוני מלמטה</td><td class="ltr">margin-bottom: 12px;</td></tr>
+<tr><td>margin-left</td><td>ריווח חיצוני משמאל</td><td class="ltr">margin-left: 12px;</td></tr>
+<tr><td>border-width</td><td>עובי המסגרת</td><td class="ltr">border-width: 2px;</td></tr>
+<tr><td>border-style</td><td>סוג המסגרת</td><td class="ltr">border-style: solid;</td></tr>
+<tr><td>border-color</td><td>צבע המסגרת</td><td class="ltr">border-color: gray;</td></tr>
+<tr><td>border-radius</td><td>עיגול פינות</td><td class="ltr">border-radius: 8px;</td></tr>
+<tr><td>width</td><td>רוחב</td><td class="ltr">width: 200px;</td></tr>
+<tr><td>height</td><td>גובה</td><td class="ltr">height: 100px;</td></tr>
+<tr><td>font-size</td><td>גודל טקסט</td><td class="ltr">font-size: 16px;</td></tr>
+<tr><td>font-style</td><td>סגנון טקסט</td><td class="ltr">font-style: italic;</td></tr>
+</table>
+
+<h2>8) מבנה הקופסה (Box Model)</h2>
+
+<p>
+ב־CSS, כל אלמנט בדף הוא קופסה.
+גם כותרת, גם פסקה, גם תמונה וגם &lt;div&gt;.
+</p>
+
+<p>
+מבנה הקופסה מורכב מארבע שכבות, מהפנימית לחיצונית:
+</p>
+
+<ul>
+  <li>Content</li>
+  <li>Padding</li>
+  <li>Border</li>
+  <li>Margin</li>
+</ul>
+
+<p>עברו עם העכבר מעל השכבות וראו איזו שכבה מודגשת.</p>
+
+<div class="box-model">
+  <div class="margin-layer">
+    <span class="layer-label">Margin</span>
+    <div class="border-layer">
+      <span class="layer-label">Border</span>
+      <div class="padding-layer">
+        <span class="layer-label">Padding</span>
+        <div class="content-layer">
+          Content
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p>
+אם מבינים את מבנה הקופסה —
+מבינים איך אלמנטים יושבים בדף ואיך לשלוט בעיצוב שלהם.
+</p>
+
+<h2>9) תרגול</h2>
+
+<h3>תרגיל 1 — עיצוב הדף מהשיעור הקודם</h3>
+
+<div class="note">
+⚠️ חשוב מאוד<br>
+אחרי כל שינוי שאתם עושים:
+<ul>
+  <li>הסתכלו על הדף</li>
+  <li>נסו להבין מה בדיוק השתנה</li>
+</ul>
+המטרה היא:
+לראות  -->  להבין  -->  לצבור ביטחון
+</div>
+
+<p>עבדו עם הקוד הבא (ב־JSFiddle):</p>
+
+<code><span class="tag">&lt;main&gt;</span>
+
+&nbsp;&nbsp;<span class="tag">&lt;h1&gt;</span><span class="text">כותרת ראשית</span><span class="tag">&lt;/h1&gt;</span>
+
+&nbsp;&nbsp;<span class="tag">&lt;section&gt;</span>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;h2&gt;</span><span class="text">אזור ראשון</span><span class="tag">&lt;/h2&gt;</span>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;h3&gt;</span><span class="text">כותרת משנה לאיזור הראשון</span><span class="tag">&lt;/h3&gt;</span>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;p&gt;</span><span class="text">טקסט לאיזור הראשון</span><span class="tag">&lt;/p&gt;</span>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="value">"https://via.placeholder.com/300"</span><span class="tag">&gt;</span>
+&nbsp;&nbsp;<span class="tag">&lt;/section&gt;</span>
+
+&nbsp;&nbsp;<span class="tag">&lt;section&gt;</span>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;h2&gt;</span><span class="text">אזור שני</span><span class="tag">&lt;/h2&gt;</span>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;h3&gt;</span><span class="text">כותרת משנה לאיזור השני</span><span class="tag">&lt;/h3&gt;</span>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;p&gt;</span><span class="text">טקסט לאזור שני</span><span class="tag">&lt;/p&gt;</span>
+&nbsp;&nbsp;<span class="tag">&lt;/section&gt;</span>
+
+&nbsp;&nbsp;<span class="tag">&lt;section&gt;</span>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;h2&gt;</span><span class="text">אזור שלישי</span><span class="tag">&lt;/h2&gt;</span>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;h3&gt;</span><span class="text">כותרת משנה לאיזור השלשי</span><span class="tag">&lt;/h3&gt;</span>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;p&gt;</span><span class="text">טקסט לאזור שלשי</span><span class="tag">&lt;/p&gt;</span>
+&nbsp;&nbsp;<span class="tag">&lt;/section&gt;</span>
+
+<span class="tag">&lt;/main&gt;</span>
+</code>
+
+<p>בצעו את המשימות:</p>
+<ul>
+  <li>צבע שונה ל־h1, h2, h3</li>
+  <li>background-color לכל section</li>
+  <li>padding לכל section</li>
+  <li>margin בין ה־sections</li>
+  <li>מסגרת בעזרת border-width, border-style, border-color</li>
+  <li>border-radius</li>
+  <li>מחלקה לתמונה: width: 250px, height: 250px</li>
+</ul>
+
+<h3>תרגיל 2 — קופסאות</h3>
+
+<ul>
+  <li>צרו 8 אלמנטים &lt;div&gt;</li>
+  <li>הגדירו מחלקה <strong>box</strong> עם:
+    <ul>
+      <li>width: 100px</li>
+      <li>height: 100px</li>
+      <li>border-width: 2px</li>
+      <li>border-style: solid</li>
+      <li>border-color: gray</li>
+    </ul>
+  </li>
+  <li>הגדירו מחלקות צבע</li>
+  <li>חברו לכל קופסה: box + מחלקת צבע אחת</li>
+  <li>הוסיפו margin, padding, border-radius</li>
+</ul>
+
+</main>
+
+<script>
+  function sendHeight() {
+    const height = document.documentElement.scrollHeight;
+    window.parent.postMessage(
+      { type: 'lesson-height', height },
+      '*'
+    );
+  }
+
+  window.addEventListener('load', sendHeight);
+  window.addEventListener('resize', sendHeight);
+
+  // ביטחון לשינויים דינמיים / פונטים
+  setTimeout(sendHeight, 100);
+</script>
+
+</body>
+</html>
