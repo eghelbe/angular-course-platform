@@ -231,7 +231,7 @@
 
 <p>
 עובדים ב־JSFiddle:<br>
-<a class="link" href="https://jsfiddle.net">https://jsfiddle.net</a>
+<a class="link" href="https://jsfiddle.net" target="_blank">https://jsfiddle.net</a>
 </p>
 
 <p>
@@ -489,11 +489,7 @@ CSS לא משנה את המבנה של הדף.<br>
     );
   }
 
-  window.addEventListener('load', sendHeight);
-  window.addEventListener('resize', sendHeight);
-
-  // ביטחון לשינויים דינמיים / פונטים
-  setTimeout(sendHeight, 100);
+  sendHeight();
 </script>
 
 </body>

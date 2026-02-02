@@ -21,12 +21,60 @@
 
   <div class="nav-section">
     <h4>דוגמאות</h4>
-    <a routerLink="/examples">כל הדוגמאות</a>
+
+    @for (category of examples; track category.categoryId) {
+      <details>
+        <summary>{{ category.categoryTitle }}</summary>
+
+        @for (project of category.projects; track project.id) {
+          <a
+            [routerLink]="['/examples', project.id]"
+            routerLinkActive="active">
+            {{ project.title }}
+          </a>
+        }
+      </details>
+    }
   </div>
 
   <div class="nav-section">
     <h4>תערוכה</h4>
-    <a routerLink="/showcase">תוצרי תלמידים</a>
+
+    @for (year of showcases; track year.yearId) {
+      <details>
+        <summary>{{ year.yearTitle }}</summary>
+
+        @for (semester of year.semesters; track semester.semesterId) {
+          <details class="nested">
+            <summary>{{ semester.semesterTitle }}</summary>
+
+            @for (grade of semester.grades; track grade.gradeId) {
+              <details class="nested deeper">
+                <summary>{{ grade.gradeTitle }}</summary>
+
+                @for (project of grade.projects; track project.id) {
+                  <a
+                    [routerLink]="[
+                      '/showcase',
+                      year.yearId,
+                      semester.semesterId,
+                      grade.gradeId,
+                      project.id
+                    ]"
+                    routerLinkActive="active">
+                    {{ project.studentName }} – {{ project.title }}
+                  </a>
+                }
+
+              </details>
+            }
+
+          </details>
+        }
+
+      </details>
+    }
+
   </div>
 
 </nav>

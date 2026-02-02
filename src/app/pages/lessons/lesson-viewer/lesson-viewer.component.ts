@@ -53,9 +53,12 @@ export class LessonViewerComponent implements OnInit, AfterViewInit, OnDestroy {
             return;
           }
 
-          this.lessonUrl =
-            this.sanitizer.bypassSecurityTrustResourceUrl(path);
+          this.lessonUrl = this.sanitizer.bypassSecurityTrustResourceUrl(path);
           this.lessonFound = true;
+
+          if (this.iframe) {
+            this.iframe.nativeElement.style.height = '0px';
+          }
         },
         error: () => {
           this.lessonFound = false;
@@ -76,7 +79,7 @@ ngAfterViewInit() {
 
   private onMessage = (event: MessageEvent) => {
     if (!this.iframe) return;
-
+  
     if (event.data?.type === 'lesson-height') {
       this.iframe.nativeElement.style.height =
         `${event.data.height}px`;

@@ -1,4 +1,36 @@
-<div class="page-container">
-    <p>showcase works!</p>
-</div>
+<div class="showcase-viewer">
 
+    @if (!activeProject()) {
+      <div class="empty-state">
+        <h2>תערוכת תוצרי תלמידים</h2>
+        <p>
+          בחרו פרויקט מתוך התפריט בצד כדי לצפות בתוצר.
+        </p>
+      </div>
+    }
+  
+    @if (activeProject()) {
+      <div class="viewer-header">
+        <div class="title">
+          {{ activeProject()!.studentName }} – {{ activeProject()!.title }}
+        </div>
+  
+        <a
+          class="open-external"
+          [href]="activeProject()!.path"
+          target="_blank">
+          פתיחה בחלון חדש
+        </a>
+      </div>
+  
+      <iframe
+        id="showcase-iframe"
+        [src]="safeIframeUrl()!"
+        width="100%"
+        frameborder="0"
+        scrolling="no">
+      </iframe>
+    }
+  
+  </div>
+  

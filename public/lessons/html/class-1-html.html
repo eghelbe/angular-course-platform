@@ -153,7 +153,7 @@
 
 	<p>
 	עובדים ב־JSFiddle:<br>
-	<a class="link" href="https://jsfiddle.net">https://jsfiddle.net</a>
+	<a class="link" href="https://jsfiddle.net" target="_blank">https://jsfiddle.net</a>
 	</p>
 
   <h2>1) מה זה HTML?</h2>
@@ -405,11 +405,7 @@
     );
   }
 
-  window.addEventListener('load', sendHeight);
-  window.addEventListener('resize', sendHeight);
-
-  // ביטחון לשינויים דינמיים / פונטים
-  setTimeout(sendHeight, 100);
+  sendHeight();
 </script>
 
 </body>

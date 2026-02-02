@@ -5,25 +5,29 @@
 }
 
 .nav-section h4 {
-  margin: 0 0 8px;
-  font-size: 13px;
-  color: var(--muted);
-  text-transform: uppercase;
+  margin: 0 0 10px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.02em;
+  text-transform: none;
 }
 
 details summary {
   cursor: pointer;
   font-weight: 600;
+  font-size: 14px;
   margin-bottom: 6px;
+  color: var(--text);
 }
 
 details a {
   display: block;
   padding: 6px 8px;
   border-radius: 8px;
+  font-size: 13px;
   color: var(--text);
   text-decoration: none;
-  font-size: 14px;
 }
 
 details a:hover {
@@ -33,4 +37,9 @@ details a:hover {
 details a.active {
   background: rgba(77,163,255,0.2);
   color: white;
+}
+
+.nav-section {
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
 }

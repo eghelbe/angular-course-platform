@@ -1,4 +1,30 @@
-<div class="page-container">
-    <p>examples works!</p>
-</div>
+<div class="examples-viewer">
 
+  @if (!projectFound) {
+    <div class="empty-state">
+      <h2>דוגמאות</h2>
+      <p>הדוגמה עדיין לא זמינה או לא קיימת.</p>
+    </div>
+  }
+
+  @if (projectFound && activeProject) {
+    <div class="viewer-header">
+      <span>{{ activeProject.title }}</span>
+
+      <a
+        [href]="activeProject.path"
+        target="_blank">
+        פתיחה בחלון חדש
+      </a>
+    </div>
+
+    <iframe
+      id="examples-iframe"
+      [src]="safeIframeUrl!"
+      width="100%"
+      frameborder="0"
+      scrolling="no">
+    </iframe>
+  }
+
+</div>

@@ -10,13 +10,37 @@ export const routes: Routes = [
     path: '',
     component: AppShellComponent,
     children: [
-      { path: '', component: HomeComponent },
+      { 
+        path: '',
+        component: HomeComponent
+      },
 
-      { path: 'lesson/:track/:slug', component: LessonViewerComponent },
+      { 
+        path: 'lesson/:track/:slug',
+        component: LessonViewerComponent
+      },
 
-      { path: 'examples', component: ExamplesComponent },
+      { 
+        path: 'examples',
+        component: ExamplesComponent
+      },
+      {
+        path: 'showcase/:year/:semester/:grade/:project',
+        component: ShowcaseComponent
+      },
 
-      { path: 'showcase', component: ShowcaseComponent },
+      {
+        path: 'showcase',
+        component: ShowcaseComponent
+      },
+      {
+        path: 'examples/:project',
+        component: ExamplesComponent
+      },
+      {
+        path: 'examples',
+        component: ExamplesComponent
+      },
     ],
   },
 
