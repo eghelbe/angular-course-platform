@@ -17,17 +17,6 @@ export class ExamplesComponent implements OnInit, OnDestroy {
   safeIframeUrl: SafeResourceUrl | null = null;
   projectFound = false;
 
-  private onMessage = (event: MessageEvent) => {
-    if (event.data?.type === 'iframe-height') {
-      const iframe =
-        document.getElementById('examples-iframe') as HTMLIFrameElement | null;
-
-      if (iframe) {
-        iframe.style.height = `${event.data.height}px`;
-      }
-    }
-  };
-
   constructor(
     private route: ActivatedRoute,
     private exampleService: ExampleService,
@@ -54,10 +43,6 @@ export class ExamplesComponent implements OnInit, OnDestroy {
 
       this.checkProjectExists(project);
     });
-  }
-
-  ngOnDestroy(): void {
-    window.removeEventListener('message', this.onMessage);
   }
 
   private checkProjectExists(project: ExampleProject) {
@@ -88,4 +73,17 @@ export class ExamplesComponent implements OnInit, OnDestroy {
     this.safeIframeUrl = null;
     this.projectFound = false;
   }
+
+    ngOnDestroy(): void {
+    window.removeEventListener('message', this.onMessage);
+  }
+
+  private onMessage = (event: MessageEvent) => {
+    if (event.data?.type === 'iframe-height') {
+      const iframe = document.getElementById('examples-iframe') as HTMLIFrameElement | null;
+      if (iframe) {
+        iframe.style.height = `${event.data.height}px`;
+      }
+    }
+  };
 }

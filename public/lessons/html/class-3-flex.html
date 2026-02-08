@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>שיעור 3 – CSS Display & Flexbox</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+	:root {
+	  --bg:#0b1020;
+	  --panel:rgba(255,255,255,0.06);
+	  --stroke:rgba(255,255,255,0.14);
+	  --text:rgba(255,255,255,0.92);
+	  --muted:rgba(255,255,255,0.75);
+	  --accent:#4da3ff;
+
+	  --radius:16px;
+	  --max:900px;
+
+	  /* legacy mapping (כדי לא לשבור כלום בהמשך) */
+	  --primary: var(--accent);
+	  --border: var(--stroke);
+	  --code-bg: rgba(0,0,0,0.35);
+	}
+
+	body {
+	  margin: 0;
+	  font-family: 'Assistant', Arial, sans-serif;
+	  background: linear-gradient(180deg,#080c1a,#0b1020);
+	  color: var(--text);
+	  line-height: 1.7;
+	}
+
+	.container-page {
+	  max-width: var(--max);
+	  margin: 32px auto;
+	  padding: 32px;
+	}
+
+	h1 {
+	  margin-top: 0;
+	  font-size: 28px;
+	  color: var(--text);
+	  text-align: right;
+	}
+
+	h2 {
+	  margin-top: 32px;
+	  font-size: 22px;
+	  border-bottom: 1px solid var(--stroke);
+	  padding-bottom: 6px;
+	  color: var(--text);
+	  display: block;
+	}
+
+	h3 {
+	  margin-top: 24px;
+	  font-size: 18px;
+	  color: var(--accent);
+	  background: none;
+	  padding: 0;
+	  border-radius: 0;
+	}
+
+	p {
+	  margin: 12px 0;
+	  color: var(--muted);
+	  font-size: 16px;
+	}
+	
+	hr {
+	  margin: 48px 0;
+	  border: none;
+	  border-top: 1px solid var(--stroke);
+	  opacity: 0.4;
+	}
+
+	code {
+	  background: rgba(0,0,0,0.35);
+	  color: #e5e7eb;
+	  padding: 2px 6px;
+	  border-radius: 6px;
+	  font-family: "Fira Code", Consolas, monospace;
+	  font-size: 0.95em;
+	  direction: ltr;
+	}
+
+    .default {
+      background: #10b981;
+      color: white;
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-right: 6px;
+    }
+
+    .section-desc {
+      border-right: 4px solid var(--accent);
+      padding-right: 15px;
+      margin-bottom: 20px;
+    }
+
+    /* split window */
+	.split {
+	  display: flex;
+	  direction: ltr;
+	  border: 1px solid var(--stroke);
+	  border-radius: var(--radius);
+	  overflow: hidden;
+	  margin: 32px 0;
+	  background: var(--panel);
+	}
+
+	.code {
+	  flex: 1.2;
+	  background: rgba(0,0,0,0.35);
+	  color: #e5e7eb;
+	  padding: 20px;
+	  font-family: "Fira Code", Consolas, monospace;
+	  font-size: 14px;
+	  overflow-x: auto;
+	  border-right: 1px solid var(--stroke);
+	}
+	
+	.code pre {
+	  margin: 0;
+	  white-space: pre;
+	  direction: ltr;
+	}
+
+	.preview {
+	  flex: 1;
+	  background: rgba(255,255,255,0.04);
+	  padding: 20px;
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+	  position: relative;
+	}
+
+	.label {
+	  position: absolute;
+	  top: 10px;
+	  right: 15px;
+	  font-size: 11px;
+	  color: var(--muted);
+	  font-weight: 600;
+	  direction: rtl;
+	  opacity: 0.85;
+	}
+
+	.demo {
+	  border: 2px dashed rgba(255,255,255,0.25);
+	  background: rgba(255,255,255,0.06);
+	  width: 100%;
+	  min-height: 140px;
+	  padding: 12px;
+	  box-sizing: border-box;
+	}
+
+    .box {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+	  font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .r { background: #ef4444; }
+    .g { background: #22c55e; }
+    .b { background: #3b82f6; }
+	
+	/* Syntax highlighting */
+
+	.tag{
+	  color:#4da3ff;
+	}
+
+	.attr{
+	  color:#7ee787;
+	}
+
+	.value{
+	  color:#f2cc60;
+	}
+
+	.text{
+	  color:#ffffff;
+	}
+
+	.comment{
+	  color:#8b949e;
+	  font-style: italic;
+	}
+	
+	.tags{
+		border: solid gray 1px;
+		border-radius: 8px;
+		padding: 3px;
+		color:#4da3ff;
+	}
+
+    @media (max-width: 700px) {
+	  .split {
+		flex-direction: column;
+	  }
+
+	  .code {
+		border-right: none;
+		border-bottom: 1px solid var(--stroke);
+	  }
+    }
+
+	/* ===== Hint (Question Mark Tooltip) ===== */
+
+	.hint {
+		position: relative;
+		display: inline-block;
+		margin: 10px 0;
+	}
+
+	.hint-icon {
+		width: 28px;
+		height: 28px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+
+		font-size: 18px;
+		font-weight: 800;
+
+		color: #f2cc60;                 /* צהוב-כתום */
+		border: 2px solid #f2cc60;
+		border-radius: 8px;
+
+		cursor: help;
+		user-select: none;
+
+		background: rgba(242,204,96,0.12);
+		transition: background 0.2s ease,
+					transform 0.2s ease,
+					box-shadow 0.2s ease;
+	}
+
+	.hint-icon:hover {
+		background: rgba(242,204,96,0.25);
+		transform: scale(1.08);
+		box-shadow: 0 0 0 4px rgba(242,204,96,0.15);
+	}
+
+	.hint-tooltip {
+		position: absolute;
+		top: 130%;
+		right: 0;
+
+		min-width: 280px;
+		padding: 14px 16px;
+
+		background: rgba(0,0,0,0.9);
+		color: var(--text);
+
+		border-radius: 12px;
+		font-size: 13px;
+		line-height: 1.6;
+
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity 0.2s ease;
+
+		box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+		z-index: 20;
+	}
+
+	.hint:hover .hint-tooltip {
+		opacity: 1;
+	}
+	
+	* {
+	  box-sizing: border-box;
+	}
+  </style>
+</head>
+
+<body>
+<div class="container-page">
+
+<h1>שיעור 3 – CSS Layout</h1>
+
+<!-- ================= DISPLAY ================= -->
+
+<h2>1) display</h2>
+
+<div class="section-desc">
+<p>
+לכל אלמנט HTML יש ערך <b>display ברירת מחדל</b>.
+גם אם לא כתבנו עליו CSS בכלל.
+</p>
+</div>
+
+<h3>display: block</h3>
+<p>
+ברירת המחדל של האלמנטים:<br>
+<span dir="ltr">
+  <code class="tags">&lt;div&gt;</code>,
+  <code class="tags">&lt;p&gt;</code>,
+  <code class="tags">&lt;section&gt;</code>
+</span><br>
+היא <code  dir="ltr"><span class="attr">display</span>: <span class="value">block</span></code>
+ - הם תופסים שורה שלמה.
+</p>
+
+<div class="split">
+<div class="code">
+<pre><span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"item"</span><span class="tag">&gt;</span><span class="text">1</span><span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"item"</span><span class="tag">&gt;</span><span class="text">2</span><span class="tag">&lt;/div&gt;</span>
+
+<span class="tag">.item</span> <span class="text">{</span>
+  <span class="attr">display</span><span class="text">:</span> <span class="value">block</span><span class="text">;</span>
+<span class="text">}</span></pre>
+</div>
+<div class="preview">
+<div class="demo">
+<div class="box r" style="width:auto;margin-bottom:6px;">1</div>
+<div class="box g" style="width:auto;">2</div>
+</div>
+</div>
+</div>
+
+<h3>display: inline</h3>
+<p>
+ברירת המחדל של <code class="tags">&lt;span&gt;</code>.
+זורם בתוך הטקסט ולא מקבל רוחב או גובה.
+</p>
+
+<div class="split">
+<div class="code">
+<pre><span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="value">"item"</span><span class="tag">&gt;</span><span class="text">1</span><span class="tag">&lt;/span&gt;</span>
+<span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="value">"item"</span><span class="tag">&gt;</span><span class="text">2</span><span class="tag">&lt;/span&gt;</span>
+
+<span class="tag">.item</span> <span class="text">{</span>
+  <span class="attr">display</span><span class="text">:</span> <span class="value">inline</span><span class="text">;</span>
+  <span class="attr">width</span><span class="text">:</span> <span class="value">100px</span><span class="text">;</span> <span class="comment">/* יתעלם מהרוחב! */</span>
+<span class="text">}</span></pre>
+</div>
+<div class="preview">
+<div class="demo">
+<span class="box r" style="display:inline;">1</span>
+<span class="box g" style="display:inline;">2</span>
+</div>
+</div>
+</div>
+
+<h3>display: inline-block</h3>
+<p>
+יושב בשורה כמו inline, אבל כן מקבל width / height.
+</p>
+
+<div class="split">
+<div class="code">
+<pre><span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"item"</span><span class="tag">&gt;</span><span class="text">1</span><span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"item"</span><span class="tag">&gt;</span><span class="text">2</span><span class="tag">&lt;/div&gt;</span>
+
+<span class="tag">.item</span> <span class="text">{</span>
+  <span class="attr">display</span><span class="text">:</span> <span class="value">inline-block</span><span class="text">;</span>
+  <span class="attr">width</span><span class="text">:</span> <span class="value">80px</span><span class="text">;</span>
+  <span class="attr">height</span><span class="text">:</span> <span class="value">80px</span><span class="text">;</span>
+<span class="text">}</span></pre>
+</div>
+<div class="preview">
+<div class="demo">
+<div class="box r" style="display:inline-block;width:80px;height:80px;">1</div>
+<div class="box g" style="display:inline-block;width:80px;height:80px;">2</div>
+</div>
+</div>
+</div>
+
+<hr style="margin:60px 0;opacity:.2">
+
+<!-- ================= FLEX ================= -->
+
+<h2>2) CSS Flex Container</h2>
+
+<div class="section-desc">
+<p>
+Flexbox עובד על <b>מכולה</b> ו<b>ילדים</b>.
+מגדירים Flex רק על המכולה — והיא שולטת על סידור הילדים.
+</p>
+</div>
+
+<div class="split">
+<div class="code" style="border: none;">
+<pre dir="ltr">
+<span class="comment">/* HTML */</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"container"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"item"</span><span class="tag">&gt;</span><span class="text">1</span><span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"item"</span><span class="tag">&gt;</span><span class="text">2</span><span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"item"</span><span class="tag">&gt;</span><span class="text">3</span><span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="comment">/* CSS */</span>
+<span class="tag">.container</span> <span class="text">{</span>
+  <span class="attr">display</span><span class="text">:</span> <span class="value">flex</span><span class="text">;</span>
+<span class="text">}</span>
+</pre>
+</div>
+</div>
+
+<h3>מאפייני השליטה של Flex Container</h3>
+
+<ul>
+  <li>
+    <code class="ltr">flex-direction</code> —
+    קובע את <b>כיוון הסידור הראשי</b> של הילדים (שורה / עמודה).
+  </li>
+
+  <li>
+    <code class="ltr">justify-content</code> —
+    שולט על <b>פיזור הילדים לאורך הציר הראשי</b>.
+  </li>
+
+  <li>
+    <code class="ltr">align-items</code> —
+    שולט על <b>יישור הילדים על הציר המשני</b>.
+  </li>
+
+  <li>
+    <code class="ltr">flex-wrap</code> —
+    קובע האם ילדים <b>נשברים לשורה חדשה</b> או נשארים בשורה אחת.
+  </li>
+
+  <li>
+    <code class="ltr">flex-flow</code> —
+    קיצור דרך לשילוב של
+    <code class="ltr">flex-direction</code>
+    ו־<code class="ltr">flex-wrap</code>.
+  </li>
+</ul>
+
+<p>
+עכשיו, אחרי שאנחנו מכירים את כלי השליטה —
+נעבור עליהם אחד אחד, עם דוגמאות.
+</p>
+
+<!-- flex-direction -->
+<h3>flex-direction</h3>
+
+<p><b>row</b> <span class="default">default</span></p>
+<div class="split">
+<div class="code">
+<pre><span class="tag">.container</span> <span class="text">{</span>
+  <span class="attr">display</span><span class="text">:</span> <span class="value">flex</span><span class="text">;</span>
+  <span class="attr">flex-direction</span><span class="text">:</span> <span class="value">row</span><span class="text">;</span>
+<span class="text">}</span></pre>
+</div>
+<div class="preview">
+<div class="demo" style="display:flex;gap:5px">
+<div class="box r">1</div><div class="box g">2</div><div class="box b">3</div>
+</div>
+</div>
+</div>
+
+<p><b>row-reverse</b></p>
+<div class="split">
+<div class="code">
+<pre><span class="tag">.container</span> <span class="text">{</span>
+  <span class="attr">display</span><span class="text">:</span> <span class="value">flex</span><span class="text">;</span>
+  <span class="attr">flex-direction</span><span class="text">:</span> <span class="value">row-reverse</span><span class="text">;</span>
+<span class="text">}</span></pre>
+</div>
+<div class="preview">
+<div class="demo" style="display:flex;flex-direction:row-reverse;gap:5px">
+<div class="box r">1</div><div class="box g">2</div><div class="box b">3</div>
+</div>
+</div>
+</div>
+
+<p><b>column</b></p>
+<div class="split">
+<div class="code">
+<pre><span class="tag">.container</span> <span class="text">{</span>
+  <span class="attr">display</span><span class="text">:</span> <span class="value">flex</span><span class="text">;</span>
+  <span class="attr">flex-direction</span><span class="text">:</span> <span class="value">column</span><span class="text">;</span>
+<span class="text">}</span></pre>
+</div>
+<div class="preview">
+<div class="demo" style="display:flex;flex-direction:column;gap:5px">
+<div class="box r">1</div><div class="box g">2</div><div class="box b">3</div>
+</div>
+</div>
+</div>
+
+
+
+<p><b>column-reverse</b></p>
+<div class="split">
+<div class="code">
+<pre><span class="tag">.container</span> <span class="text">{</span>
+  <span class="attr">display</span><span class="text">:</span> <span class="value">flex</span><span class="text">;</span>
+  <span class="attr">flex-direction</span><span class="text">:</span> <span class="value">column-reverse</span><span class="text">;</span>
+<span class="text">}</span></pre>
+</div>
+<div class="preview">
+<div class="demo" style="display:flex;flex-direction:column-reverse;gap:5px">
+<div class="box r">1</div><div class="box g">2</div><div class="box b">3</div>
+</div>
+</div>
+</div>
+
+<!-- justify-content -->
+<h3>justify-content</h3>
+
+<p><b>flex-start</b> <span class="default">default</span></p>
+<div class="split">
+<div class="code">
+
+<pre><span class="tag">.container</span> <span class="text">{</span>
+  <span class="attr">display</span><span class="text">:</span> <span class="value">flex</span><span class="text">;</span>
+  <span class="attr">justify-content</span><span class="text">:</span> <span class="value">flex-start</span><span class="text">;</span>
+<span class="text">}</span></pre>
+
+</div>
+<div class="preview">
+<div class="demo" style="display:flex;justify-content:flex-start;gap:5px">
+<div class="box r">1</div><div class="box g">2</div><div class="box b">3</div>
+</div>
+</div>
+</div>
+
+<p><b>center</b></p>
+<div class="split">
+<div class="code">
+<pre><span class="tag">.container</span> <span class="text">{</span>
+  <span class="attr">display</span><span class="text">:</span> <span class="value">flex</span><span class="text">;</span>
+  <span class="attr">justify-content</span><span class="text">:</span> <span class="value">center</span><span class="text">;</span>
+<span class="text">}</span></pre>
+</div>
+<div class="preview">
+<div class="demo" style="display:flex;justify-content:center;gap:5px">
+<div class="box r">1</div><div class="box g">2</div><div class="box b">3</div>
+</div>
+</div>
+</div>
+
+<p><b>space-between</b></p>
+<div class="split">
+<div class="code">
+<pre><span class="tag">.container</span> <span class="text">{</span>
+  <span class="attr">display</span><span class="text">:</span> <span class="value">flex</span><span class="text">;</span>
+  <span class="attr">justify-content</span><span class="text">:</span> <span class="value">space-between</span><span class="text">;</span>
+<span class="text">}</span></pre>
+</div>
+<div class="preview">
+<div class="demo" style="display:flex;justify-content:space-between">
+<div class="box r">1</div><div class="box g">2</div><div class="box b">3</div>
+</div>
+</div>
+</div>
+
+<p><b>space-around</b></p>
+<div class="split">
+<div class="code">
+<pre><span class="tag">.container</span> <span class="text">{</span>
+  <span class="attr">display</span><span class="text">:</span> <span class="value">flex</span><span class="text">;</span>
+  <span class="attr">justify-content</span><span class="text">:</span> <span class="value">space-around</span><span class="text">;</span>
+<span class="text">}</span></pre>
+</div>
+<div class="preview">
+<div class="demo" style="display:flex;justify-content:space-around">
+<div class="box r">1</div><div class="box g">2</div><div class="box b">3</div>
+</div>
+</div>
+</div>
+
+<p><b>space-evenly</b></p>
+<div class="split">
+<div class="code">
+<pre><span class="tag">.container</span> <span class="text">{</span>
+  <span class="attr">display</span><span class="text">:</span> <span class="value">flex</span><span class="text">;</span>
+  <span class="attr">justify-content</span><span class="text">:</span> <span class="value">space-evenly</span><span class="text">;</span>
+<span class="text">}</span></pre>
+</div>
+<div class="preview">
+<div class="demo" style="display:flex;justify-content:space-evenly">
+<div class="box r">1</div><div class="box g">2</div><div class="box b">3</div>
+</div>
+</div>
+</div>
+
+<!-- align-items -->
+<h3>align-items</h3>
+
+<p><b>stretch</b> <span class="default">default</span></p>
+<div class="split">
+<div class="code">
+<pre><span class="tag">.container</span> <span class="text">{</span>
+  <span class="attr">display</span><span class="text">:</span> <span class="value">flex</span><span class="text">;</span>
+  <span class="attr">align-items</span><span class="text">:</span> <span class="value">stretch</span><span class="text">;</span>
+<span class="text">}</span></pre>
+</div>
+<div class="preview">
+<div class="demo" style="display:flex;align-items:stretch;gap:5px">
+<div class="box r" style="height:auto">1</div>
+<div class="box g" style="height:auto">2</div>
+<div class="box b" style="height:auto">3</div>
+</div>
+</div>
+</div>
+
+<p><b>center</b></p>
+<div class="split">
+<div class="code">
+<pre><span class="tag">.container</span> <span class="text">{</span>
+  <span class="attr">display</span><span class="text">:</span> <span class="value">flex</span><span class="text">;</span>
+  <span class="attr">align-items</span><span class="text">:</span> <span class="value">center</span><span class="text">;</span>
+<span class="text">}</span></pre>
+</div>
+<div class="preview">
+<div class="demo" style="display:flex;align-items:center;gap:5px;height:140px">
+<div class="box r">1</div>
+<div class="box g" style="height:80px">2</div>
+<div class="box b">3</div>
+</div>
+</div>
+</div>
+
+<p><b>flex-start</b> – יישור לחלק העליון של המכולה.</p>
+
+<div class="split">
+  <div class="code">
+<pre><span class="tag">.container</span> <span class="text">{</span>
+  <span class="attr">display</span><span class="text">:</span> <span class="value">flex</span><span class="text">;</span>
+  <span class="attr">align-items</span><span class="text">:</span> <span class="value">flex-start</span><span class="text">;</span>
+<span class="text">}</span></pre>
+  </div>
+
+  <div class="preview">
+    <div class="demo" style="display:flex;align-items:flex-start;height:140px;gap:5px">
+      <div class="box r">1</div>
+      <div class="box g" style="height:80px">2</div>
+      <div class="box b">3</div>
+    </div>
+  </div>
+</div>
+
+<p><b>flex-end</b> – יישור לחלק התחתון של המכולה.</p>
+
+<div class="split">
+  <div class="code">
+<pre><span class="tag">.container</span> <span class="text">{</span>
+  <span class="attr">display</span><span class="text">:</span> <span class="value">flex</span><span class="text">;</span>
+  <span class="attr">align-items</span><span class="text">:</span> <span class="value">flex-end</span><span class="text">;</span>
+<span class="text">}</span></pre>
+  </div>
+
+  <div class="preview">
+    <div class="demo" style="display:flex;align-items:flex-end;height:140px;gap:5px">
+      <div class="box r">1</div>
+      <div class="box g" style="height:80px">2</div>
+      <div class="box b">3</div>
+    </div>
+  </div>
+</div>
+
+<p>
+<b>baseline</b> – יישור לפי קו הבסיס של הטקסט שבתוך הפריטים.<br>
+שימושי במיוחד כשיש גדלי טקסט שונים.
+</p>
+
+<div class="split">
+  <div class="code">
+<pre><span class="tag">.container</span> <span class="text">{</span>
+  <span class="attr">display</span><span class="text">:</span> <span class="value">flex</span><span class="text">;</span>
+  <span class="attr">align-items</span><span class="text">:</span> <span class="value">baseline</span><span class="text">;</span>
+<span class="text">}</span></pre>
+  </div>
+
+  <div class="preview">
+    <div class="demo" style="display:flex;align-items:baseline;height:140px;gap:5px">
+      <div class="box r" style="font-size:14px">1</div>
+      <div class="box g" style="font-size:30px">2</div>
+      <div class="box b" style="font-size:18px">3</div>
+    </div>
+  </div>
+</div>
+
+<!-- flex-wrap -->
+<h3>flex-wrap</h3>
+
+<p><b>nowrap</b> <span class="default">default</span></p>
+<div class="split">
+<div class="code">
+<pre><span class="tag">.container</span> <span class="text">{</span>
+  <span class="attr">display</span><span class="text">:</span> <span class="value">flex</span><span class="text">;</span>
+  <span class="attr">flex-wrap</span><span class="text">:</span> <span class="value">nowrap</span><span class="text">;</span>
+<span class="text">}</span></pre>
+</div>
+<div class="preview">
+<div class="demo" style="display:flex;flex-wrap:nowrap;gap:5px">
+<div class="box r" style="width:40%">1</div>
+<div class="box g" style="width:40%">2</div>
+<div class="box b" style="width:40%">3</div>
+</div>
+</div>
+</div>
+
+<p><b>wrap</b></p>
+<div class="split">
+<div class="code">
+<pre><span class="tag">.container</span> <span class="text">{</span>
+  <span class="attr">display</span><span class="text">:</span> <span class="value">flex</span><span class="text">;</span>
+  <span class="attr">flex-wrap</span><span class="text">:</span> <span class="value">wrap</span><span class="text">;</span>
+<span class="text">}</span></pre>
+</div>
+<div class="preview">
+<div class="demo" style="display:flex;flex-wrap:wrap;gap:5px">
+<div class="box r" style="width:45%">1</div>
+<div class="box g" style="width:45%">2</div>
+<div class="box b" style="width:45%">3</div>
+</div>
+</div>
+</div>
+
+<p><b>wrap-reverse</b></p>
+<div class="split">
+<div class="code">
+	<pre><span class="tag">.container</span> <span class="text">{</span>
+  <span class="attr">display</span><span class="text">:</span> <span class="value">flex</span><span class="text">;</span>
+  <span class="attr">flex-wrap</span><span class="text">:</span> <span class="value">wrap-reverse</span><span class="text">;</span>
+<span class="text">}</span></pre>
+</div>
+<div class="preview">
+<div class="demo" style="display:flex;flex-wrap:wrap-reverse;gap:5px">
+<div class="box r" style="width:45%">1</div>
+<div class="box g" style="width:45%">2</div>
+<div class="box b" style="width:45%">3</div>
+</div>
+</div>
+</div>
+
+<!-- flex-flow -->
+<h3>flex-flow</h3>
+
+<p>קיצור דרך ל־<code>flex-direction</code> ו־<code>flex-wrap</code>.</p>
+
+<div class="split">
+<div class="code">
+<pre><span class="tag">.container</span> <span class="text">{</span>
+  <span class="attr">display</span><span class="text">:</span> <span class="value">flex</span><span class="text">;</span>
+  <span class="attr">flex-flow</span><span class="text">:</span> <span class="value">column wrap</span><span class="text">;</span>
+<span class="text">}</span></pre>
+</div>
+<div class="preview">
+<div class="demo" style="display:flex;flex-flow:column wrap;height:120px;gap:5px">
+<div class="box r">1</div>
+<div class="box g">2</div>
+<div class="box b">3</div>
+</div>
+</div>
+</div>
+
+<h2>10) תרגול מסכם — Flexbox</h2>
+
+<p>
+בתרגילים הבאים תתרגלו שליטה במכולת Flex באמצעות מה שלמדנו:
+<br>
+<ul>
+  <li><span class="ltr">flex-direction</span></li>
+  <li><span class="ltr">justify-content</span></li>
+  <li><span class="ltr">align-items</span></li>
+  <li><span class="ltr">flex-wrap</span></li>
+  <li><span class="ltr">flex-flow</span></li>
+</ul>
+</p>
+
+<div class="note">
+⚠️ חשוב<br>
+בכל התרגילים:
+
+  מגדירים <span class="ltr"><span class="attr">display</span>: <span class="value">flex</span></span> רק על המכולה
+
+</div>
+
+<h3>תרגיל 1 — סרגל ניווט אופקי (Header)</h3>
+
+<p>
+צרו סרגל ניווט אופקי, כמו בראש אתר.
+</p>
+
+<p><b>דרישות:</b></p>
+<ul>
+  <li>צרו מכולה אחת</li>
+  <li>בתוך המכולה:
+    <ul>
+      <li>לוגו בצד אחד</li>
+      <li>5 כפתורים / קישורים בצד השני</li>
+    </ul>
+  </li>
+  <li>הסרגל צריך להיות:
+    <ul>
+      <li>אופקי</li>
+      <li>עם רווח בין הלוגו לכפתורים</li>
+      <li>מיושר יפה על הציר המשני</li>
+    </ul>
+  </li>
+</ul>
+
+<p class="hint">
+  <span class="hint-icon">?</span>
+
+  <span class="hint-tooltip">
+    חשבו איזה מאפיין שולט על הפיזור בציר הראשי,<br>
+    ואיזה מאפיין שולט על היישור בציר המשני.<br>
+    חשבו האם צריך יותר ממכולה אחת.
+  </span>
+</p>
+
+<hr>
+
+<h3>תרגיל 2 — גלריה של ריבועים</h3>
+
+<p>
+צרו גלריה גמישה של ריבועים צבעוניים.
+</p>
+
+<p><b>דרישות:</b></p>
+<ul>
+  <li>מכולה אחת</li>
+  <li>20 ריבועים (אלמנטים)</li>
+  <li>לכל ריבוע:
+    <ul>
+      <li>רוחב קבוע</li>
+      <li>גובה קבוע</li>
+      <li>צבע רקע שונה</li>
+    </ul>
+  </li>
+  <li>הגלריה צריכה:
+    <ul>
+      <li>להישבר לשורות</li>
+      <li>להיות ממורכזת על הציר הראשי</li>
+      <li>ולהיות ממורכזת גם על הציר המשני</li>
+    </ul>
+  </li>
+</ul>
+
+<p class="hint">
+  <span class="hint-icon">?</span>
+
+  <span class="hint-tooltip">
+    בדקו מה ההבדל בין
+    <span class="ltr">justify-content</span>
+    לבין
+    <span class="ltr">align-items</span>.
+  </span>
+</p>
+
+<hr>
+
+<h3>תרגיל 3 — סרגל ניווט תחתון (Footer)</h3>
+
+<p>
+צרו סרגל ניווט אופקי נוסף, בסגנון שונה.
+</p>
+
+<p><b>דרישות:</b></p>
+<ul>
+  <li>סרגל אופקי</li>
+  <li>3 קישורים בלבד:
+    <ul>
+      <li>תנאי פרטיות</li>
+      <li>מדיניות השימוש</li>
+      <li>צור קשר</li>
+    </ul>
+  </li>
+  <li>הסרגל צריך:
+    <ul>
+      <li>להיות ממורכז על הציר המשני</li>
+      <li>לפזר את הקישורים ברווחים שווים על הציר הראשי</li>
+    </ul>
+  </li>
+</ul>
+
+<p class="hint">
+  <span class="hint-icon">?</span>
+
+  <span class="hint-tooltip">
+    חפשו ערך ב־<span class="ltr">justify-content</span>
+    שמפזר רווחים בצורה שווה.
+  </span>
+</p>
+
+<hr>
+
+<h3>תרגיל 4 — מבנה אתר מלא (תרגיל מסכם)</h3>
+
+<p>
+בתרגיל זה תחברו את כל התרגילים הקודמים למבנה אתר אמיתי.
+</p>
+
+<p><b>מבנה האתר:</b></p>
+<ul>
+  <li>בחלק העליון — סרגל הניווט מתרגיל 1</li>
+  <li>מתחתיו — הגלריה מתרגיל 2</li>
+  <li>בתחתית — סרגל הניווט מתרגיל 3</li>
+</ul>
+
+<p><b>דרישות חשובות:</b></p>
+<ul>
+  <li>כל האתר צריך להיות מסודר בצורה אנכית</li>
+  <li>הגלריה צריכה לגדול ולמלא את רוב גובה הדף</li>
+  <li>סרגל ה־Footer צריך להישאר בתחתית הדף</li>
+  <li>אין להשתמש ב־<span class="ltr">position</span></li>
+  <li>הכול מתבצע בעזרת Flexbox בלבד</li>
+</ul>
+
+<p class="hint">
+  <span class="hint-icon">?</span>
+
+  <span class="hint-tooltip">
+    חשבו מי המכולה הראשית של האתר,
+    ואיך היא שולטת על שלושת החלקים שבתוכה.
+  </span>
+</p>
+
+</div>
+
+<script>
+  function sendHeight() {
+    const height = document.documentElement.scrollHeight;
+    window.parent.postMessage(
+      { type: 'lesson-height', height },
+      '*'
+    );
+  }
+
+  sendHeight();
+</script>
+</body>
+</html>

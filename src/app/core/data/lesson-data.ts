@@ -14,6 +14,11 @@ export const LESSON_TRACKS: LessonTrack[] = [
         slug: 'class-2-css-basics',
         title: 'שיעור 2 — CSS: עיצוב בסיסי ו־Box Model',
         file: 'lessons/css/class-2-css-basics.html'
+      },
+      {
+        slug: 'class-3-flex',
+        title: 'שיעור 3 — CSS Flexbox (Flex Container)',
+        file: 'lessons/html/class-3-flex.html'
       }
     ]
   },
