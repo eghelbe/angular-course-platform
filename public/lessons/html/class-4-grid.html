@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>שיעור 4 – CSS Grid Layout</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700&family=Assistant:wght@400;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg:#0b1020;
+      --panel:rgba(255,255,255,0.06);
+      --stroke:rgba(255,255,255,0.14);
+      --text:rgba(255,255,255,0.92);
+      --muted:rgba(255,255,255,0.75);
+      --accent:#4da3ff;
+      --radius:16px;
+      --max:900px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Heebo", "Assistant", Arial, sans-serif;
+      background: linear-gradient(180deg,#080c1a,#0b1020);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    main {
+      max-width: var(--max);
+      margin: 32px auto;
+      padding: 32px;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-top: 0;
+    }
+
+    h2 {
+      font-size: 22px;
+      border-bottom: 1px solid var(--stroke);
+      padding-bottom: 6px;
+      margin-top: 32px;
+    }
+
+    h3 {
+      font-size: 18px;
+      color: var(--accent);
+      margin-top: 24px;
+    }
+
+    p {
+      margin: 12px 0;
+      color: var(--muted);
+    }
+
+    code {
+      display: block;
+      background: #0e1325;
+      border: 1px solid var(--stroke);
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin: 16px 0;
+      font-family: "Fira Code", Consolas, monospace;
+      font-size: 15px;
+      line-height: 1.6;
+      direction: ltr;
+      text-align: left;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .tag { color: #4da3ff; }
+    .comment { color: #8b949e; font-style: italic; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+      font-size: 14px;
+    }
+
+    th, td {
+      border: 1px solid var(--stroke);
+      padding: 10px;
+      text-align: right;
+    }
+
+    th {
+      background: rgba(255,255,255,0.08);
+    }
+
+    /* ===== PREVIEW / SHOWCASE STYLES ===== */
+    .showcase-container {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      padding: 40px;
+      margin: 32px 0;
+    }
+
+    .showcase-label {
+      text-align: left;
+      direction: ltr;
+      font-size: 12px;
+      color: var(--accent);
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .shoe-store {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      background-color: transparent;
+    }
+
+    .sale-banner {
+      grid-column: span 3;
+      background-color: #ef4444;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-weight: bold;
+      border-radius: 8px;
+      font-size: 1.1em;
+    }
+
+    .shoe-item {
+      background-color: white;
+      color: #333;
+      height: 120px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    .shoe-price {
+      color: #22c55e;
+      margin-top: 5px;
+      font-size: 0.9em;
+    }
+
+    /* ===== EXERCISE STYLES ===== */
+    .exercise-box {
+      margin-top: 32px;
+      padding: 24px;
+      border: 1px dashed var(--stroke);
+      border-radius: 16px;
+      background: rgba(0,0,0,0.25);
+    }
+  </style>
+</head>
+
+<body>
+<main>
+
+  <h1>שיעור 4: CSS Grid — בניית רשת חכמה</h1>
+
+  <h2>1) Grid — פריסה דו־ממדית (שורה ועמודה)</h2>
+  <p>עד היום השתמשנו ב-Flexbox כדי לסדר דברים בשורה או בעמודה. בשיעור זה נכיר את ה-Grid, שמאפשר לנו לשלוט בשניהם בו-זמנית. הוא מושלם למבנים כמו גלריות, חנויות דיגיטליות או לוחות משחקים.</p>
+
+  <h3>איך נראה הקוד שלנו? (דוגמה: חנות נעליים)</h3>
+  <p>כדי שהגריד יעבוד, אנחנו מגדירים פקודות למכולה (החנות) ופקודות לפריטים (הנעליים).</p>
+  
+  <p><strong>דוגמה לקוד CSS:</strong></p>
+<code><span class="comment">/* 1. המכולה (החנות כולה) */</span>
+<span class="tag">.shoe-store</span> {
+  <span class="tag">display</span>: grid; 
+  <span class="comment">/* יצירת 3 עמודות שוות */</span>
+  <span class="tag">grid-template-columns</span>: repeat(3, 1fr); 
+  <span class="tag">gap</span>: 20px;
+  <span class="tag">background-color</span>: #f0f0f0;
+  <span class="tag">padding</span>: 15px;
+}
+
+<span class="comment">/* 2. הפריט הבודד (נעל אחת) */</span>
+<span class="tag">.shoe-item</span> {
+  <span class="tag">background-color</span>: white;
+  <span class="tag">height</span>: 200px;
+  <span class="tag">border</span>: 1px solid gray;
+}
+</code>
+
+  <h2>2) מי המכולה ומי הפריט?</h2>
+  <p>כדי שה-CSS יעבוד, אנחנו חייבים לקשר אותו ל-HTML בעזרת ה-class.</p>
+  <p><strong>ב-HTML זה ייראה כך:</strong></p>
+
+<code><span class="tag">&lt;div</span> class="shoe-store"<span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> class="shoe-item"<span class="tag">&gt;</span>נעל א'<span class="tag">&lt;/div&gt;</span> 
+  <span class="tag">&lt;div</span> class="shoe-item"<span class="tag">&gt;</span>נעל ב'<span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;div</span> class="shoe-item"<span class="tag">&gt;</span>נעל ג'<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+</code>
+
+  <p>ה-class שנקרא <strong>shoe-store</strong> הוא המכולה: הוא קובע שיש 3 עמודות בחנות.</p>
+  <p>ה-class שנקרא <strong>shoe-item</strong> הוא הפריט הבודד: הוא קובע איך תיראה כל קופסת נעל (צבע לבן, גובה 200 פיקסלים).</p>
+
+  <h2>3) שילוב תאים (Spanning) — פריט "ענק"</h2>
+  <p>לפעמים נרצה שפריט אחד (למשל שלט מבצעים) יהיה רחב יותר מהשאר. </p>
+  <p><strong>שימו לב:</strong> את הפקודה הזו כותבים ב-class של הפריט עצמו!</p>
+
+  <table>
+    <tr>
+      <th>מאפיין</th>
+      <th>מה זה עושה?</th>
+      <th>דוגמה</th>
+    </tr>
+    <tr>
+      <td>grid-column</td>
+      <td>כמה עמודות הפריט יתפוס</td>
+      <td>span 3 (יתפוס שורה שלמה של 3 עמודות)</td>
+    </tr>
+  </table>
+
+  <p><strong>דוגמה לשלט מבצעים שתופס את כל רוחב החנות:</strong></p>
+<code><span class="tag">.sale-banner</span> {
+  <span class="tag">grid-column</span>: span 3; <span class="comment">/* נמתח על פני 3 עמודות */</span>
+  <span class="tag">background-color</span>: red;
+  <span class="tag">color</span>: white;
+  <span class="tag">text-align</span>: center;
+}
+</code>
+
+  <div class="showcase-container">
+    <div class="showcase-label">תצוגה מקדימה (PREVIEW)</div>
+    
+    <div class="shoe-store">
+      <div class="sale-banner">🔥 מבצע סוף עונה - 50% הנחה! 🔥</div>
+      <div class="shoe-item">
+        👟 נייקי אייר
+        <div class="shoe-price">₪499</div>
+      </div>
+      <div class="shoe-item">
+        👞 נעלי אלגנט
+        <div class="shoe-price">₪350</div>
+      </div>
+      <div class="shoe-item">
+        👠 עקבי ערב
+        <div class="shoe-price">₪290</div>
+      </div>
+      <div class="shoe-item">
+        🏃 נעלי ריצה
+        <div class="shoe-price">₪420</div>
+      </div>
+    </div>
+  </div>
+
+  <h2>4) תרגול — בונים לוח משחק זיכרון (מאפס!)</h2>
+  <p>עכשיו תורכם ליישם את מה שלמדנו על עולם תוכן חדש: משחק זיכרון. אל תעתיקו מהדוגמה למעלה, אלא תנסו לחשוב מה המכולה שלכם ומה הפריטים.</p>
+
+  <div class="exercise-box">
+    <h3>תרגיל 4.1 — יצירת לוח המשחק (המכולה)</h3>
+    <ul>
+      <li>צרו <strong>div</strong> ב-HTML עם <strong>class</strong> בשם <strong>memory-game</strong>.</li>
+      <li>הכניסו פנימה 16 אלמנטים מסוג <strong>div</strong> (אלו יהיו הקלפים).</li>
+      <li>ב-CSS: הגדירו למכולה (memory-game) גריד של 4 עמודות (רמז: השתמשו ב-repeat).</li>
+      <li>הוסיפו gap של 12px.</li>
+    </ul>
+  </div>
+
+  <div class="exercise-box">
+    <h3>תרגיל 4.2 — הוספת כותרת ללוח (Spanning)</h3>
+    <ul>
+      <li>הוסיפו <strong>div</strong> ראשון בתוך המכולה (לפני הקלפים) עם הטקסט: "הצלחתי לבנות גריד!".</li>
+      <li>תנו לו <strong>class</strong> בשם <strong>main-title</strong>.</li>
+      <li>ב-CSS: גרמו לכותרת להימתח על פני כל 4 העמודות (רמז: grid-column).</li>
+      <li>תנו לכותרת צבע רקע צהוב כדי שנראה שהיא באמת תופסת את כל השורה.</li>
+    </ul>
+  </div>
+
+  <div class="exercise-box">
+    <h3>תרגיל 4.3 — עיצוב קלפי המשחק (הפריטים)</h3>
+    <ul>
+      <li>צרו ב-CSS הגדרה ל-<strong>class</strong> בשם <strong>memory-card</strong>.</li>
+      <li>תנו לקלף גובה (height) של 130px.</li>
+      <li>תנו לו צבע רקע כחול כהה ועיגול פינות (border-radius: 10px).</li>
+      <li>חזרו ל-HTML וודאו שלכל 16 ה-<strong>div</strong>-ים של הקלפים יש את ה-<strong>class="memory-card"</strong>.</li>
+    </ul>
+  </div>
+
+</main>
+
+<script>
+  function sendHeight() {
+    const height = document.documentElement.scrollHeight;
+    window.parent.postMessage(
+      { type: 'lesson-height', height },
+      '*'
+    );
+  }
+
+  sendHeight();
+</script>
+
+</body>
+</html>
+
